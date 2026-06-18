@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link href="styles.css" rel="stylesheet">
+        <title>Mehedi Hasan Sifat</title>
+    </head>
+
+    <body>
+
+        <nav class="navbar bg-dark">
+            <div class="container">
+
+                <a class="navbar-brand text-white" href="#">
+                    <img src="nycto.png" height="70px" width="70px">
+                    Nycto
+                </a>
+
+                <a class="btn btn-outline-light" href="index.html">
+                    Home
+                </a>
+
+                <a class="btn btn-outline-light" href="about.html">
+                    About
+                </a>
+
+                <a class="btn btn-outline-light" href="projects.html">
+                    Projects
+                </a>
+
+                <a class="btn btn-outline-light" href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+        </nav>
+
+        <div class="container text-center mt-5">
+
+            <h1>Mehedi Hasan Sifat</h1>
+            <h3>CSE Undergraduate</h3>
+            <p>
+                Software Engineer | Competitive Programmer | AI & Cybersecurity Enthusiast
+            </p>
+
+            <button id="motivation-btn" class="btn btn-dark">
+                Show Motivation
+            </button>
+            <p id="quote"></p>
+            
+        </div>
+
+        <hr>
+
+       
+        <!-- <section class="poster-section">
+            <div class="poster-content">
+                <h1>Nycto</h1>
+                <p>Developer | Competitive Programmer | Creator</p>
+                <a href="projects.html" class="btn">Wanna See My Projects</a>
+            </div>
+        </section> -->
+
+
+        <script>
+            
+            document.querySelector('#motivation-btn').addEventListener('click', function() {
+                document.querySelector('#quote').innerHTML = 'Life Is Like A GitHub Repository, No Change Without Commit';
+            });
+
+        </script>
+
+    </body>
+
+</html>

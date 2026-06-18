@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link href="styles.css" rel="stylesheet">
+        <title>Mehedi Hasan Sifat</title>
+    </head>
+
+    <body>
+
+        <nav class="navbar bg-dark">
+            <div class="container">
+
+                <a class="navbar-brand text-white" href="#">
+                    <img src="nycto.png" height="70px" width="70px">
+                    Nycto
+                </a>
+
+                <a class="btn btn-outline-light" href="index.html">
+                    Home
+                </a>
+
+                <a class="btn btn-outline-light" href="about.html">
+                    About
+                </a>
+
+                <a class="btn btn-outline-light" href="projects.html">
+                    Projects
+                </a>
+
+                <a class="btn btn-outline-light" href="contact.html">
+                    Contact
+                </a>
+
+            </div>
+        </nav>
+
+        <h1>Contact Me</h1>
+
+        <h2>Find Me Online</h2>
+        <p>
+            <a href="https://www.linkedin.com/in/mehedihasan-sifat/">Linkedin</a>
+        </p>
+        <p>
+            <a href="https://www.github.com/SifatNycto/">GitHub</a>
+        </p>
+        <p>
+            <a href="https://www.facebook.com/sifat.nycto/">Facebook</a>
+        </p>
+        <p>
+            <a href="http://www.instagram.com/sifat.nycto/">Instagram</a>
+        </p>
+
+        
+        <form>
+
+            <div class="mb-3">
+                <label>Name</label>
+                <input type="text" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label>Message</label>
+                <textarea class="form-control"></textarea>
+            </div>
+
+            <button id="submit-btn" type="button" class="btn btn-primary">Submit</button>
+
+        </form>
+
+        <p id="response"></p>
+
+        <script>
+
+            document.querySelector('#submit-btn').addEventListener('click', function() {
+                document.querySelector('#response').innerHTML = 
+                'Thank you for visiting my website!';
+            });
+
+        </script>
+
+    </body>
+
+</html>
