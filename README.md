@@ -52,8 +52,8 @@ Coding_HTML/
 ├── Learning/          # Learning exercises
 ├── Markup_Practice/   # HTML/markup practice
 ├── trivia/            # Small practice project
+├── Programmers_Day/         # Programmer Day practice project
 │
-├── P_Day.html         # Programmer Day practice project
 ├── form.html          # HTML form practice
 ├── new.html           # HTML practice
 ├── table.html         # Table practice
