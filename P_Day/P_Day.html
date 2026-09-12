@@ -73,6 +73,7 @@
             linear-gradient(rgba(0,246,255,.035) 1px, transparent 1px),
             linear-gradient(90deg, rgba(0,246,255,.035) 1px, transparent 1px);
         background-size: 45px 45px;
+        -webkit-mask-image: linear-gradient(to bottom, black, transparent);
         mask-image: linear-gradient(to bottom, black, transparent);
     }
 
@@ -113,6 +114,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        -webkit-backdrop-filter: blur(16px);
         backdrop-filter: blur(16px);
         background: rgba(2,4,10,.45);
         border-bottom: 1px solid rgba(0,246,255,.08);
@@ -326,6 +328,7 @@
         box-shadow:
             0 0 80px rgba(0,246,255,.06),
             inset 0 0 50px rgba(0,0,0,.4);
+        -webkit-backdrop-filter: blur(20px);
         backdrop-filter: blur(20px);
         transform-style: preserve-3d;
         transition: transform .15s;
@@ -611,6 +614,104 @@
     }
 
     /* =========================
+       SCROLL REVEAL
+    ========================= */
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* =========================
+       BUTTON RIPPLE
+    ========================= */
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255,255,255,.5);
+        transform: scale(0);
+        animation: rippleAnim .6s linear;
+        pointer-events: none;
+    }
+
+    @keyframes rippleAnim {
+        to {
+            transform: scale(3);
+            opacity: 0;
+        }
+    }
+
+    /* =========================
+       CURSOR TRAIL
+    ========================= */
+
+    .trail-dot {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan), 0 0 16px var(--cyan);
+        pointer-events: none;
+        z-index: 30;
+        mix-blend-mode: screen;
+        will-change: transform, opacity;
+    }
+
+    /* =========================
+       LIVE STATS
+    ========================= */
+
+    .stats-section {
+        padding: 40px 7% 100px;
+    }
+
+    .stats-grid {
+        max-width: 1000px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        text-align: center;
+    }
+
+    .stat {
+        padding: 30px 15px;
+        border: 1px solid rgba(0,246,255,.12);
+        background: rgba(8,14,27,.5);
+        transition: .3s;
+    }
+
+    .stat:hover {
+        border-color: rgba(0,246,255,.4);
+        transform: translateY(-6px);
+    }
+
+    .stat .num {
+        font-family: Arial, sans-serif;
+        font-size: clamp(26px, 4vw, 42px);
+        font-weight: 900;
+        color: var(--cyan);
+        text-shadow: 0 0 20px rgba(0,246,255,.3);
+    }
+
+    .stat .label {
+        margin-top: 10px;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--muted);
+    }
+
+    /* =========================
        RESPONSIVE
     ========================= */
 
@@ -625,6 +726,10 @@
 
         h1 {
             letter-spacing: -4px;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
@@ -644,6 +749,19 @@
         .code {
             font-size: 11px;
             padding: 20px;
+        }
+    }
+
+    /* =========================
+       ACCESSIBILITY
+    ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: .001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .001ms !important;
+            scroll-behavior: auto !important;
         }
     }
 </style>
@@ -732,7 +850,7 @@
         <h2>THE PROGRAM</h2>
     </div>
 
-    <div class="code-window" id="codeWindow">
+    <div class="code-window reveal" id="codeWindow">
 
         <div class="window-bar">
             <div class="dot"></div>
@@ -792,7 +910,7 @@ me.<span class="function">build</span>();
 
     <div class="cards">
 
-        <div class="card">
+        <div class="card reveal">
             <div class="card-icon">⌨️</div>
             <h3>CREATE</h3>
             <p>
@@ -801,7 +919,7 @@ me.<span class="function">build</span>();
             </p>
         </div>
 
-        <div class="card">
+        <div class="card reveal">
             <div class="card-icon">🐛</div>
             <h3>DEBUG</h3>
             <p>
@@ -810,7 +928,7 @@ me.<span class="function">build</span>();
             </p>
         </div>
 
-        <div class="card">
+        <div class="card reveal">
             <div class="card-icon">🧠</div>
             <h3>LEARN</h3>
             <p>
@@ -819,7 +937,7 @@ me.<span class="function">build</span>();
             </p>
         </div>
 
-        <div class="card">
+        <div class="card reveal">
             <div class="card-icon">🚀</div>
             <h3>BUILD</h3>
             <p>
@@ -833,11 +951,46 @@ me.<span class="function">build</span>();
 </section>
 
 
+<!-- ================= LIVE STATS ================= -->
+
+<section class="stats-section" id="stats">
+
+    <div class="stats-grid">
+
+        <div class="stat reveal">
+            <div class="num" data-target="92000000">0</div>
+            <div class="label">DEVS ONLINE, ROUGHLY</div>
+        </div>
+
+        <div class="stat reveal">
+            <div class="num" data-target="4200000000">0</div>
+            <div class="label">LINES COMMITTED TODAY*</div>
+        </div>
+
+        <div class="stat reveal">
+            <div class="num" data-target="1000000">0</div>
+            <div class="label">BUGS SQUASHED*</div>
+        </div>
+
+        <div class="stat reveal">
+            <div class="num" data-target="99999">0</div>
+            <div class="label">CUPS OF COFFEE ☕*</div>
+        </div>
+
+    </div>
+
+    <p style="text-align:center; margin-top:20px; font-size:10px; color:var(--muted); letter-spacing:1px;">
+        * playful estimates, not official data — but the vibe is real
+    </p>
+
+</section>
+
+
 <!-- ================= QUOTE ================= -->
 
 <section class="quote">
 
-    <div class="quote-box">
+    <div class="quote-box reveal">
 
         <div class="quote-mark">“</div>
 
@@ -865,7 +1018,7 @@ me.<span class="function">build</span>();
         <h2>ONE LAST COMMAND</h2>
     </div>
 
-    <div class="terminal">
+    <div class="terminal reveal">
 
         <div class="terminal-top">
             host@developer-machine — bash
@@ -940,26 +1093,55 @@ me.<span class="function">build</span>();
    MATRIX RAIN
 ========================================================= */
 
+const reduceMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-
-resizeCanvas();
-
-window.addEventListener("resize", resizeCanvas);
 
 const chars =
     "01アイウエオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\\$#@";
 
 const fontSize = 14;
-let columns = Math.floor(window.innerWidth / fontSize);
-let drops = Array(columns).fill(1);
+let columns = 0;
+let drops = [];
 
-function matrixRain() {
+// BUGFIX: previously "columns"/"drops" were computed once at load and never
+// recalculated on resize, so resizing the window left dead columns on one
+// side (or wasted a shrunk array). Now resize rebuilds the drop array while
+// preserving progress for columns that still exist.
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const newColumns = Math.floor(canvas.width / fontSize);
+
+    drops = Array.from({ length: newColumns }, (_, i) =>
+        drops[i] !== undefined ? drops[i] : Math.random() * (canvas.height / fontSize)
+    );
+
+    columns = newColumns;
+}
+
+resizeCanvas();
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeCanvas, 150);
+});
+
+// OPTIMIZATION: swapped setInterval for a timestamp-throttled requestAnimationFrame
+// loop. This keeps the same ~45ms cadence but automatically pauses/throttles
+// when the tab is backgrounded, instead of burning CPU in the background forever.
+let lastFrame = 0;
+const FRAME_INTERVAL = 45;
+
+function matrixRain(timestamp) {
+    requestAnimationFrame(matrixRain);
+
+    if (timestamp - lastFrame < FRAME_INTERVAL) return;
+    lastFrame = timestamp;
 
     ctx.fillStyle = "rgba(2,4,10,.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -993,7 +1175,9 @@ function matrixRain() {
     }
 }
 
-setInterval(matrixRain, 45);
+if (!reduceMotion) {
+    requestAnimationFrame(matrixRain);
+}
 
 
 /* =========================================================
@@ -1003,7 +1187,12 @@ setInterval(matrixRain, 45);
 const particleContainer =
     document.getElementById("particles");
 
-for (let i = 0; i < 80; i++) {
+// OPTIMIZATION: fewer particles on small/mobile screens, and skip entirely
+// if the user has asked for reduced motion.
+const particleCount =
+    reduceMotion ? 0 : (window.innerWidth < 600 ? 35 : 80);
+
+for (let i = 0; i < particleCount; i++) {
 
     const p = document.createElement("div");
 
@@ -1079,6 +1268,13 @@ let messageIndex = 0;
 
 function typeTerminal() {
 
+    // BUGFIX: the "Initializing..." placeholder text was never removed,
+    // so it sat permanently above every typed line instead of being
+    // replaced by them. Clear it right as typing begins.
+    if (messageIndex === 0) {
+        terminalOutput.textContent = "";
+    }
+
     if (messageIndex >= terminalMessages.length) {
         return;
     }
@@ -1108,6 +1304,11 @@ setTimeout(typeTerminal, 1800);
    CELEBRATION
 ========================================================= */
 
+// OPTIMIZATION: the original burst created 180 real DOM nodes and ran each
+// through the Web Animations API on every click — expensive to lay out and
+// paint, especially on phones. This does the same visual burst (radiating
+// squares, gravity, fade + spin) on a single throwaway canvas driven by one
+// requestAnimationFrame loop instead.
 function celebrate() {
 
     const colors = [
@@ -1118,77 +1319,86 @@ function celebrate() {
         "#ffffff"
     ];
 
-    for (let i = 0; i < 180; i++) {
+    const primaryBtn = document.querySelector(".primary");
 
-        const confetti =
-            document.createElement("div");
+    const burstCanvas = document.createElement("canvas");
+    burstCanvas.style.position = "fixed";
+    burstCanvas.style.inset = "0";
+    burstCanvas.style.zIndex = "100";
+    burstCanvas.style.pointerEvents = "none";
+    burstCanvas.width = window.innerWidth;
+    burstCanvas.height = window.innerHeight;
+    document.body.appendChild(burstCanvas);
 
-        confetti.style.position = "fixed";
-        confetti.style.left = "50%";
-        confetti.style.top = "50%";
+    const bctx = burstCanvas.getContext("2d");
+    const cx = burstCanvas.width / 2;
+    const cy = burstCanvas.height / 2;
 
-        confetti.style.width =
-            Math.random() * 8 + 3 + "px";
+    const particleCount = reduceMotion ? 0 : 180;
 
-        confetti.style.height =
-            Math.random() * 8 + 3 + "px";
+    const particles = Array.from({ length: particleCount }, () => {
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 3 + Math.random() * 9;
 
-        confetti.style.background =
-            colors[
-                Math.floor(
-                    Math.random() * colors.length
-                )
-            ];
+        return {
+            x: cx,
+            y: cy,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity,
+            size: Math.random() * 8 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            life: 1,
+            decay: 0.008 + Math.random() * 0.01,
+            rotation: Math.random() * Math.PI * 2,
+            spin: (Math.random() - 0.5) * 0.3
+        };
+    });
 
-        confetti.style.boxShadow =
-            "0 0 10px currentColor";
+    function frame() {
+        bctx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+        let alive = false;
 
-        confetti.style.zIndex = "100";
+        particles.forEach((p) => {
+            if (p.life <= 0) return;
+            alive = true;
 
-        confetti.style.pointerEvents = "none";
+            p.vy += 0.12;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rotation += p.spin;
+            p.life -= p.decay;
 
-        document.body.appendChild(confetti);
+            bctx.save();
+            bctx.globalAlpha = Math.max(p.life, 0);
+            bctx.translate(p.x, p.y);
+            bctx.rotate(p.rotation);
+            bctx.fillStyle = p.color;
+            bctx.shadowColor = p.color;
+            bctx.shadowBlur = 8;
+            bctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            bctx.restore();
+        });
 
-        const angle =
-            Math.random() * Math.PI * 2;
-
-        const velocity =
-            300 + Math.random() * 800;
-
-        const dx =
-            Math.cos(angle) * velocity;
-
-        const dy =
-            Math.sin(angle) * velocity;
-
-        confetti.animate(
-            [
-                {
-                    transform:
-                        "translate(-50%, -50%) scale(1)",
-                    opacity: 1
-                },
-                {
-                    transform:
-                        `translate(
-                            calc(-50% + ${dx}px),
-                            calc(-50% + ${dy}px)
-                        )
-                        rotate(${Math.random()*720}deg)
-                        scale(0)`,
-                    opacity: 0
-                }
-            ],
-            {
-                duration:
-                    1200 + Math.random() * 1300,
-                easing: "cubic-bezier(.1,.7,.2,1)"
-            }
-        ).onfinish = () => confetti.remove();
+        if (alive) {
+            requestAnimationFrame(frame);
+        } else {
+            burstCanvas.remove();
+        }
     }
 
-    document.querySelector(".primary").textContent =
-        "> CELEBRATION_SUCCESS ✓";
+    if (particleCount > 0) {
+        requestAnimationFrame(frame);
+    } else {
+        burstCanvas.remove();
+    }
+
+    // BUGFIX: the button text used to say "CELEBRATION_SUCCESS" forever
+    // after the first click. Now it reverts after a couple seconds so the
+    // button reads as clickable again.
+    primaryBtn.textContent = "> CELEBRATION_SUCCESS ✓";
+    setTimeout(() => {
+        primaryBtn.textContent = "> RUN CELEBRATION()";
+    }, 2200);
 }
 
 
@@ -1226,6 +1436,159 @@ setInterval(() => {
     }
 
 }, 1800);
+
+
+/* =========================================================
+   SCROLL REVEAL (new)
+========================================================= */
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.15 });
+
+document.querySelectorAll(".reveal").forEach((el) => {
+    if (reduceMotion) {
+        el.classList.add("active");
+    } else {
+        revealObserver.observe(el);
+    }
+});
+
+
+/* =========================================================
+   LIVE STAT COUNTERS (new)
+========================================================= */
+
+function animateCount(el) {
+    const target = Number(el.dataset.target);
+    const duration = 1600;
+    const start = performance.now();
+
+    function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        el.textContent = Math.floor(eased * target).toLocaleString();
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        } else {
+            el.textContent = target.toLocaleString();
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
+const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            if (reduceMotion) {
+                entry.target.textContent =
+                    Number(entry.target.dataset.target).toLocaleString();
+            } else {
+                animateCount(entry.target);
+            }
+            statObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll(".stat .num").forEach((el) => statObserver.observe(el));
+
+
+/* =========================================================
+   CURSOR TRAIL (new)
+========================================================= */
+
+if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+
+    const TRAIL_LENGTH = 8;
+
+    const trailDots = Array.from({ length: TRAIL_LENGTH }, () => {
+        const dot = document.createElement("div");
+        dot.className = "trail-dot";
+        dot.style.opacity = "0";
+        document.body.appendChild(dot);
+        return dot;
+    });
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    const positions = Array.from({ length: TRAIL_LENGTH }, () => ({ x: mouseX, y: mouseY }));
+
+    document.addEventListener("mousemove", (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateTrail() {
+        positions.unshift({ x: mouseX, y: mouseY });
+        positions.pop();
+
+        trailDots.forEach((dot, i) => {
+            const pos = positions[i];
+            const fade = 1 - i / TRAIL_LENGTH;
+
+            dot.style.transform =
+                `translate(${pos.x - 3}px, ${pos.y - 3}px) scale(${fade})`;
+            dot.style.opacity = String(fade * 0.8);
+        });
+
+        requestAnimationFrame(animateTrail);
+    }
+
+    requestAnimationFrame(animateTrail);
+}
+
+
+/* =========================================================
+   BUTTON RIPPLE (new)
+========================================================= */
+
+document.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.width = ripple.style.height = size + "px";
+        ripple.style.left = e.clientX - rect.left - size / 2 + "px";
+        ripple.style.top = e.clientY - rect.top - size / 2 + "px";
+
+        btn.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove());
+    });
+});
+
+
+/* =========================================================
+   STATUS LABEL TYPEWRITER (new)
+========================================================= */
+
+const statusLabel = document.querySelector(".terminal-label");
+
+if (statusLabel && !reduceMotion) {
+    const statusFullText = statusLabel.textContent.trim();
+    statusLabel.textContent = "";
+    let statusIndex = 0;
+
+    function typeStatus() {
+        if (statusIndex <= statusFullText.length) {
+            statusLabel.textContent = statusFullText.slice(0, statusIndex);
+            statusIndex++;
+            setTimeout(typeStatus, 35);
+        }
+    }
+
+    typeStatus();
+}
 
 
 /* =========================================================
