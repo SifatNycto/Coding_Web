@@ -40,7 +40,11 @@
         <div class="container text-center mt-5">
 
             <h1>Mehedi Hasan Sifat</h1>
+
+            <br>
+
             <h3>CSE Undergraduate</h3>
+            
             <p>
                 Software Engineer | Competitive Programmer | AI & Cybersecurity Enthusiast
             </p>
@@ -54,15 +58,15 @@
 
         <hr>
 
-       
-        <!-- <section class="poster-section">
-            <div class="poster-content">
-                <h1>Nycto</h1>
-                <p>Developer | Competitive Programmer | Creator</p>
-                <a href="projects.html" class="btn">Wanna See My Projects</a>
-            </div>
-        </section> -->
+        <div class="container text-center mt-5">
 
+            <h3>Choose Theme</h3>
+            <button id="dark-btn" class="btn btn-dark">Dark</button>
+            <button id="blue-btn" class="btn btn-primary">Blue</button>
+            <button id="green-btn" class="btn btn-success">Green</button>
+            <button id="red-btn" class="btn btn-danger">Red</button>
+
+        </div>
 
         <script>
             
@@ -70,6 +74,22 @@
                 document.querySelector('#quote').innerHTML = 'Life Is Like A GitHub Repository, No Change Without Commit';
             });
 
+            document.querySelector('#dark-btn').addEventListener('click', function() {
+                document.body.style.backgroundColor = 'black';
+                document.body.style.color = 'white';
+            });
+
+            document.querySelector('#blue-btn').addEventListener('click', function() {
+                document.body.style.backgroundColor = 'blue';
+            });
+
+            document.querySelector('#green-btn').addEventListener('click', function() {
+                document.body.style.backgroundColor = 'green';
+            });
+
+            document.querySelector('#red-btn').addEventListener('click', function() {
+                document.body.style.backgroundColor = 'red';
+            });
         </script>
 
     </body>

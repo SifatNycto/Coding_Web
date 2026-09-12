@@ -1,17 +1,52 @@
-<nav>
-<a>
-<div>
-<h1>
-<h3>
-<p>
-<button>
-<span>
-<ul>
-<li>
-<form>
-<label>
-<input>
-<textarea>
+HTML Tags Used:
 
-document.querySelector('#quote').innerHTML = 
-'Only I Can Change My Life, No One Can Do It For Me.';
+1. <html>
+2. <head>
+3. <title>
+4. <body>
+5. <nav>
+6. <a>
+7. <div>
+8. <h1>
+9. <h3>
+10. <p>
+11. <hr>
+12. <br>
+13. <button>
+14. <span>
+15. <ul>
+16. <li>
+17. <form>
+18. <label>
+19. <input>
+20. <textarea>
+
+
+
+CSS Properties Used:
+
+1. body
+2. h1
+3. .navbar
+4. .card
+5. #quote
+6. #response
+7. a
+8. p
+
+
+CSS Properties used:
+
+1. background-color
+2. color
+3. font-weight
+4. padding
+5. border-radius
+6. font-size
+7. font-style
+
+Bootstrap:
+Used Bootstrap navbar, buttons, badges, cards, forms, and containers to create a responsive website.
+
+JavaScript:
+Used JavaScript to display a motivational quote on the homepage and show a thank-you message on the contact page.

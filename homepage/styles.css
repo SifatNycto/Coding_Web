@@ -1,16 +1,42 @@
-/* .poster-section {
-  background: url('poster.png') center/cover no-repeat;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-shadow: 2px 2px 4px #b1a8f6;
-}
-.poster-content {
-  text-align: center;
+body {
+  background-color: #f8f9fa;
 }
 
-.btn:hover {
-  background: rgba(0, 0, 0, 0.7);
-} */
+h1 {
+  color: navy;
+  font-weight: bold;
+}
+
+.navbar {
+  padding: 15px;
+}
+
+.card {
+  border-radius: 20px;
+}
+
+#quote {
+  font-size: 20px;
+}
+
+#response {
+  font-size: 20px;
+  color: magenta;
+  font-style: italic;
+}
+a {
+  font-weight: bold;
+}
+
+p {
+  font-size: 20px;
+}
+
+li {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+h2 {
+  font-weight: bold;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Form</title>
+    </head>
+
+<body>
+
+<form>
+
+    <fieldset>
+        <legend>Employee Information</legend>
+
+        <table border="1" cellpadding="8">
+
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="username" size="50"></td>
+            </tr>
+
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="password" size="50"></td>
+            </tr>
+
+            <tr>
+                <td>City of Employment:</td>
+                <td><input type="text" name="city" size="50"></td>
+            </tr>
+
+            <tr>
+                <td>Date of Joining:</td>
+                <td><input type="date" name="joining"></td>
+            </tr>
+
+            <tr>
+                <td>Employee ID (Number):</td>
+                <td><input type="number" name="id" placeholder="Enter your ID"></td>
+            </tr>
+
+            <tr>
+                <td>Upload Resume:</td>
+                <td><input type="file" name="resume"></td>
+            </tr>
+
+        </table>
+
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Server Information</legend>
+
+        <table border="1" cellpadding="8">
+
+            <tr>
+                <td>Web Server:</td>
+                <td>
+                    <select name="server">
+                        <option>-- Choose a server --</option>
+                        <option>Apache</option>
+                        <option>Nginx</option>
+                        <option>IIS</option>
+                        <option>Tomcat</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Please specify your role:</td>
+
+                <td>
+                    <input type="radio" name="role" value="Admin"> Admin <br>
+                    <input type="radio" name="role" value="Engineer"> Engineer <br>
+                    <input type="radio" name="role" value="Manager"> Manager <br>
+                    <input type="radio" name="role" value="Guest"> Guest
+                </td>
+            </tr>
+
+        </table>
+
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Single Sign-on Options</legend>
+
+        <table border="1" cellpadding="8">
+
+            <tr>
+                <td>Single Sign-on to the following:</td>
+
+                <td>
+                    <input type="checkbox" name="mail"> Mail <br>
+                    <input type="checkbox" name="payroll"> Payroll <br>
+                    <input type="checkbox" name="selfservice"> Self-service
+                </td>
+            </tr>
+
+        </table>
+
+    </fieldset>
+
+    <br>
+
+    <center>
+        <input type="submit" value="Login">
+        <input type="reset" value="Reset">
+    </center>
+
+</form>
+
+</body>
+</html>

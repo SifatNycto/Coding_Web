@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Programmer Day — September 13</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --bg: #02040a;
+        --panel: rgba(7, 13, 25, 0.72);
+        --cyan: #00f6ff;
+        --blue: #368cff;
+        --purple: #a855f7;
+        --green: #00ff88;
+        --white: #f5f7ff;
+        --muted: #78849d;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--white);
+        font-family: "Courier New", monospace;
+        overflow-x: hidden;
+        cursor: crosshair;
+    }
+
+    /* =========================
+       BACKGROUND
+    ========================= */
+
+    #matrix {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -5;
+        opacity: .16;
+    }
+
+    .noise {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        pointer-events: none;
+        opacity: .035;
+        background-image:
+            repeating-radial-gradient(
+                circle at 0 0,
+                transparent 0,
+                rgba(255,255,255,.8) 1px,
+                transparent 2px
+            );
+        background-size: 4px 4px;
+    }
+
+    .grid {
+        position: fixed;
+        inset: 0;
+        z-index: -4;
+        pointer-events: none;
+        background-image:
+            linear-gradient(rgba(0,246,255,.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,246,255,.035) 1px, transparent 1px);
+        background-size: 45px 45px;
+        mask-image: linear-gradient(to bottom, black, transparent);
+    }
+
+    .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: -3;
+    }
+
+    .orb.one {
+        width: 350px;
+        height: 350px;
+        background: rgba(0,246,255,.12);
+        top: 10%;
+        left: -100px;
+    }
+
+    .orb.two {
+        width: 450px;
+        height: 450px;
+        background: rgba(168,85,247,.10);
+        right: -150px;
+        top: 40%;
+    }
+
+    /* =========================
+       NAV
+    ========================= */
+
+    nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 50;
+        padding: 18px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(16px);
+        background: rgba(2,4,10,.45);
+        border-bottom: 1px solid rgba(0,246,255,.08);
+    }
+
+    .logo {
+        color: var(--cyan);
+        font-weight: bold;
+        letter-spacing: 3px;
+    }
+
+    .logo span {
+        color: var(--purple);
+    }
+
+    nav a {
+        color: #9aa6bd;
+        text-decoration: none;
+        margin-left: 25px;
+        font-size: 12px;
+        transition: .3s;
+    }
+
+    nav a:hover {
+        color: var(--cyan);
+        text-shadow: 0 0 12px var(--cyan);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 100px 20px 50px;
+        position: relative;
+    }
+
+    .hero-content {
+        max-width: 1100px;
+        width: 100%;
+    }
+
+    .date {
+        color: var(--cyan);
+        letter-spacing: 8px;
+        font-size: 14px;
+        margin-bottom: 28px;
+        animation: pulse 2s infinite;
+    }
+
+    .terminal-label {
+        display: inline-block;
+        border: 1px solid rgba(0,246,255,.25);
+        padding: 8px 18px;
+        border-radius: 4px;
+        color: var(--green);
+        background: rgba(0,255,136,.035);
+        font-size: 12px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 30px rgba(0,255,136,.05);
+    }
+
+    h1 {
+        font-family: Arial, sans-serif;
+        font-size: clamp(55px, 11vw, 150px);
+        line-height: .82;
+        font-weight: 900;
+        letter-spacing: -8px;
+        text-transform: uppercase;
+        position: relative;
+    }
+
+    h1 .happy {
+        display: block;
+        font-size: .35em;
+        letter-spacing: 12px;
+        color: white;
+        margin-bottom: 25px;
+    }
+
+    h1 .programmer {
+        color: transparent;
+        -webkit-text-stroke: 2px var(--cyan);
+        text-shadow:
+            0 0 10px rgba(0,246,255,.4),
+            0 0 50px rgba(0,246,255,.15);
+        animation: neon 2s ease-in-out infinite alternate;
+    }
+
+    h1 .day {
+        display: block;
+        color: white;
+        font-size: .55em;
+        letter-spacing: 15px;
+        margin-top: 30px;
+    }
+
+    .glitch {
+        position: relative;
+    }
+
+    .glitch::before,
+    .glitch::after {
+        content: "PROGRAMMER";
+        position: absolute;
+        left: 0;
+        right: 0;
+        color: transparent;
+        -webkit-text-stroke: 2px;
+        pointer-events: none;
+    }
+
+    .glitch::before {
+        -webkit-text-stroke-color: #ff00c8;
+        transform: translate(3px, -2px);
+        clip-path: inset(10% 0 70% 0);
+        animation: glitch1 2.5s infinite;
+    }
+
+    .glitch::after {
+        -webkit-text-stroke-color: #00ffff;
+        transform: translate(-3px, 2px);
+        clip-path: inset(60% 0 10% 0);
+        animation: glitch2 1.8s infinite;
+    }
+
+    .subtitle {
+        margin: 45px auto 0;
+        max-width: 700px;
+        color: #aeb8ca;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .subtitle strong {
+        color: white;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .actions {
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        font-family: inherit;
+        cursor: pointer;
+        color: white;
+        border: 1px solid var(--cyan);
+        background: rgba(0,246,255,.05);
+        padding: 15px 25px;
+        transition: .3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button:hover {
+        background: var(--cyan);
+        color: #001014;
+        box-shadow: 0 0 30px rgba(0,246,255,.5);
+        transform: translateY(-3px);
+    }
+
+    .primary {
+        background: var(--cyan);
+        color: #001014;
+        font-weight: bold;
+    }
+
+    /* =========================
+       CODE WINDOW
+    ========================= */
+
+    .code-section {
+        padding: 100px 7%;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .section-title small {
+        color: var(--green);
+    }
+
+    .section-title h2 {
+        font-family: Arial, sans-serif;
+        font-size: clamp(30px, 5vw, 60px);
+        margin-top: 12px;
+    }
+
+    .code-window {
+        max-width: 1000px;
+        margin: auto;
+        background: var(--panel);
+        border: 1px solid rgba(0,246,255,.18);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow:
+            0 0 80px rgba(0,246,255,.06),
+            inset 0 0 50px rgba(0,0,0,.4);
+        backdrop-filter: blur(20px);
+        transform-style: preserve-3d;
+        transition: transform .15s;
+    }
+
+    .window-bar {
+        height: 45px;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        gap: 8px;
+    }
+
+    .dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+    }
+
+    .dot:nth-child(1) { background: #ff5f57; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #28c840; }
+
+    .filename {
+        margin-left: 15px;
+        color: #68748d;
+        font-size: 11px;
+    }
+
+    .code {
+        padding: 30px;
+        min-height: 330px;
+        font-size: 15px;
+        line-height: 1.9;
+        color: #c7d0df;
+        white-space: pre-wrap;
+    }
+
+    .keyword { color: #c084fc; }
+    .function { color: #38bdf8; }
+    .string { color: #86efac; }
+    .comment { color: #4d637b; }
+    .number { color: #fbbf24; }
+
+    .cursor {
+        display: inline-block;
+        width: 8px;
+        height: 18px;
+        background: var(--cyan);
+        animation: blink .7s infinite;
+        vertical-align: middle;
+    }
+
+    /* =========================
+       CARDS
+    ========================= */
+
+    .cards {
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    .card {
+        min-height: 210px;
+        padding: 25px;
+        background: rgba(8,14,27,.65);
+        border: 1px solid rgba(255,255,255,.07);
+        transition: .35s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: var(--cyan);
+        filter: blur(70px);
+        opacity: 0;
+        transition: .4s;
+    }
+
+    .card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(0,246,255,.4);
+        box-shadow: 0 20px 60px rgba(0,0,0,.4);
+    }
+
+    .card:hover::before {
+        opacity: .12;
+    }
+
+    .card-icon {
+        font-size: 35px;
+        margin-bottom: 25px;
+    }
+
+    .card h3 {
+        margin-bottom: 12px;
+        color: white;
+    }
+
+    .card p {
+        color: #718097;
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    /* =========================
+       QUOTE
+    ========================= */
+
+    .quote {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+    .quote-box {
+        max-width: 900px;
+        position: relative;
+    }
+
+    .quote-mark {
+        font-size: 150px;
+        line-height: .3;
+        color: rgba(0,246,255,.12);
+        font-family: Georgia, serif;
+    }
+
+    blockquote {
+        font-family: Arial, sans-serif;
+        font-size: clamp(28px, 5vw, 60px);
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    blockquote span {
+        color: var(--cyan);
+    }
+
+    .quote-author {
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    /* =========================
+       TERMINAL
+    ========================= */
+
+    .terminal-section {
+        padding: 80px 7% 120px;
+    }
+
+    .terminal {
+        max-width: 850px;
+        margin: auto;
+        background: #03060c;
+        border: 1px solid #182438;
+        box-shadow: 0 30px 100px rgba(0,0,0,.5);
+    }
+
+    .terminal-top {
+        padding: 12px 18px;
+        background: #080d16;
+        color: #65728a;
+        font-size: 11px;
+        border-bottom: 1px solid #121b29;
+    }
+
+    .terminal-body {
+        padding: 25px;
+        min-height: 270px;
+        color: #b8c4d6;
+        font-size: 13px;
+        line-height: 2;
+    }
+
+    .prompt {
+        color: var(--green);
+    }
+
+    .terminal-input {
+        color: white;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+        padding: 40px 20px;
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,.06);
+        color: #465269;
+        font-size: 11px;
+    }
+
+    footer .code-symbol {
+        color: var(--cyan);
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    /* =========================
+       PARTICLES
+    ========================= */
+
+    #particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    .particle {
+        position: absolute;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 10px var(--cyan);
+        animation: float linear infinite;
+    }
+
+    /* =========================
+       ANIMATIONS
+    ========================= */
+
+    @keyframes neon {
+        from {
+            text-shadow: 0 0 10px rgba(0,246,255,.2);
+        }
+        to {
+            text-shadow:
+                0 0 10px rgba(0,246,255,.7),
+                0 0 40px rgba(0,246,255,.3);
+        }
+    }
+
+    @keyframes pulse {
+        50% { opacity: .4; }
+    }
+
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+
+    @keyframes glitch1 {
+        0%, 90%, 100% { opacity: 0; }
+        92% { opacity: 1; transform: translate(7px,-3px); }
+        94% { opacity: 1; transform: translate(-5px,2px); }
+    }
+
+    @keyframes glitch2 {
+        0%, 80%, 100% { opacity: 0; }
+        82% { opacity: 1; transform: translate(-7px,3px); }
+        84% { opacity: 1; transform: translate(4px,-2px); }
+    }
+
+    @keyframes float {
+        from {
+            transform: translateY(100vh);
+            opacity: 0;
+        }
+        15% { opacity: 1; }
+        85% { opacity: 1; }
+        to {
+            transform: translateY(-10vh);
+            opacity: 0;
+        }
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 850px) {
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        nav .links {
+            display: none;
+        }
+
+        h1 {
+            letter-spacing: -4px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .cards {
+            grid-template-columns: 1fr;
+        }
+
+        h1 {
+            font-size: 48px;
+        }
+
+        h1 .programmer {
+            -webkit-text-stroke: 1px var(--cyan);
+        }
+
+        .code {
+            font-size: 11px;
+            padding: 20px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="noise"></div>
+<div class="grid"></div>
+
+<div class="orb one"></div>
+<div class="orb two"></div>
+
+<div id="particles"></div>
+
+<!-- ================= NAV ================= -->
+
+<nav>
+    <div class="logo">
+        &lt;<span>DEV</span>/&gt;
+    </div>
+
+    <div class="links">
+        <a href="#code">CODE</a>
+        <a href="#mindset">MINDSET</a>
+        <a href="#terminal">TERMINAL</a>
+    </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="date">
+            SEPTEMBER 13
+        </div>
+
+        <div class="terminal-label">
+            &gt; SYSTEM_STATUS: CELEBRATING_CREATORS
+        </div>
+
+        <h1>
+            <span class="happy">HAPPY</span>
+
+            <span class="programmer glitch">
+                PROGRAMMER
+            </span>
+
+            <span class="day">
+                DAY &lt;/&gt;
+            </span>
+        </h1>
+
+        <p class="subtitle">
+            To every <strong>developer</strong>, <strong>coder</strong>,
+            <strong>debugger</strong>, <strong>problem solver</strong>
+            and dreamer who turns
+            <strong>ideas into reality.</strong>
+        </p>
+
+        <div class="actions">
+            <button class="primary" onclick="celebrate()">
+                &gt; RUN CELEBRATION()
+            </button>
+
+            <button onclick="document.getElementById('code').scrollIntoView()">
+                &lt;/&gt; VIEW SOURCE
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CODE ================= -->
+
+<section class="code-section" id="code">
+
+    <div class="section-title">
+        <small>// LIFE_OF_A_PROGRAMMER</small>
+        <h2>THE PROGRAM</h2>
+    </div>
+
+    <div class="code-window" id="codeWindow">
+
+        <div class="window-bar">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="filename">programmer.js</div>
+        </div>
+
+        <div class="code">
+<span class="keyword">class</span> <span class="function">Programmer</span> {
+
+    <span class="function">constructor</span>() {
+        <span class="keyword">this</span>.dreams = <span class="number">∞</span>;
+        <span class="keyword">this</span>.coffee = <span class="number">∞</span>;
+        <span class="keyword">this</span>.bugs = <span class="string">"temporary"</span>;
+    }
+
+    <span class="function">build</span>() {
+        <span class="keyword">while</span> (<span class="keyword">this</span>.dreams) {
+
+            <span class="keyword">this</span>.<span class="function">learn</span>();
+            <span class="keyword">this</span>.<span class="function">code</span>();
+            <span class="keyword">this</span>.<span class="function">debug</span>();
+            <span class="keyword">this</span>.<span class="function">improve</span>();
+
+            <span class="comment">// Never stop building.</span>
+        }
+    }
+
+    <span class="function">impact</span>() {
+        <span class="keyword">return</span> <span class="string">"Make something that matters."</span>;
+    }
+}
+
+<span class="keyword">const</span> me = <span class="keyword">new</span> <span class="function">Programmer</span>();
+
+me.<span class="function">build</span>();
+
+<span class="comment">// Happy Programmer Day! 🚀</span>
+
+<span class="cursor"></span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CARDS ================= -->
+
+<section id="mindset">
+
+    <div class="section-title">
+        <small>// CORE_VALUES</small>
+        <h2>WHY WE CODE</h2>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-icon">⌨️</div>
+            <h3>CREATE</h3>
+            <p>
+                Turn an empty file into something that can change
+                the way people think, work and live.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🐛</div>
+            <h3>DEBUG</h3>
+            <p>
+                Every bug is another puzzle. Every error is another
+                opportunity to understand something deeper.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🧠</div>
+            <h3>LEARN</h3>
+            <p>
+                Technologies change. Languages evolve.
+                The greatest skill is staying curious.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🚀</div>
+            <h3>BUILD</h3>
+            <p>
+                Don't just consume technology.
+                Build something the future will remember.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= QUOTE ================= -->
+
+<section class="quote">
+
+    <div class="quote-box">
+
+        <div class="quote-mark">“</div>
+
+        <blockquote>
+            We don't just write code.
+            <br>
+            We <span>write possibilities.</span>
+        </blockquote>
+
+        <div class="quote-author">
+            // FOR EVERYONE WHO HAS EVER DEBUGGED LIFE AT 3 AM
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TERMINAL ================= -->
+
+<section class="terminal-section" id="terminal">
+
+    <div class="section-title">
+        <small>// TERMINAL</small>
+        <h2>ONE LAST COMMAND</h2>
+    </div>
+
+    <div class="terminal">
+
+        <div class="terminal-top">
+            host@developer-machine — bash
+        </div>
+
+        <div class="terminal-body" id="terminalBody">
+
+            <div>
+                <span class="prompt">host@dev:~$</span>
+                <span class="terminal-input"> whoami</span>
+            </div>
+
+            <div>
+                programmer
+            </div>
+
+            <br>
+
+            <div>
+                <span class="prompt">host@dev:~$</span>
+                <span class="terminal-input"> ./celebrate.sh</span>
+            </div>
+
+            <div id="terminalOutput">
+                Initializing...
+            </div>
+
+            <br>
+
+            <div>
+                <span class="prompt">host@dev:~$</span>
+                <span class="cursor"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="code-symbol">
+        &lt;/&gt;
+    </div>
+
+    <p>
+        SEPTEMBER 13 · HAPPY PROGRAMMER DAY
+    </p>
+
+    <br>
+
+    <p>
+        Keep learning. Keep building. Keep debugging.
+    </p>
+
+    <br>
+
+    <p>
+        © 2026 — Built with curiosity, caffeine & code.
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   MATRIX RAIN
+========================================================= */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
+const chars =
+    "01アイウエオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\\$#@";
+
+const fontSize = 14;
+let columns = Math.floor(window.innerWidth / fontSize);
+let drops = Array(columns).fill(1);
+
+function matrixRain() {
+
+    ctx.fillStyle = "rgba(2,4,10,.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+
+        const char =
+            chars[Math.floor(Math.random() * chars.length)];
+
+        ctx.fillStyle =
+            Math.random() > .92
+                ? "#ffffff"
+                : "#00ff88";
+
+        ctx.fillText(
+            char,
+            i * fontSize,
+            drops[i] * fontSize
+        );
+
+        if (
+            drops[i] * fontSize > canvas.height &&
+            Math.random() > .975
+        ) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(matrixRain, 45);
+
+
+/* =========================================================
+   FLOATING PARTICLES
+========================================================= */
+
+const particleContainer =
+    document.getElementById("particles");
+
+for (let i = 0; i < 80; i++) {
+
+    const p = document.createElement("div");
+
+    p.className = "particle";
+
+    p.style.left =
+        Math.random() * 100 + "%";
+
+    p.style.animationDuration =
+        (5 + Math.random() * 12) + "s";
+
+    p.style.animationDelay =
+        (-Math.random() * 15) + "s";
+
+    p.style.opacity =
+        Math.random();
+
+    particleContainer.appendChild(p);
+}
+
+
+/* =========================================================
+   MOUSE PARALLAX
+========================================================= */
+
+const codeWindow =
+    document.getElementById("codeWindow");
+
+document.addEventListener("mousemove", (e) => {
+
+    const x =
+        (e.clientX / window.innerWidth - .5);
+
+    const y =
+        (e.clientY / window.innerHeight - .5);
+
+    codeWindow.style.transform =
+        `perspective(1000px)
+         rotateY(${x * 4}deg)
+         rotateX(${-y * 4}deg)`;
+});
+
+
+/* =========================================================
+   TERMINAL ANIMATION
+========================================================= */
+
+const terminalOutput =
+    document.getElementById("terminalOutput");
+
+const terminalMessages = [
+    "> Loading developer.exe",
+    "> Checking caffeine levels...",
+    "> Caffeine: CRITICAL ☕",
+    "> Searching for bugs...",
+    "> Bugs found: 847",
+    "> Debugging...",
+    "> Bugs remaining: 846",
+    "> Close enough.",
+    "",
+    "> Compiling dreams...",
+    "> Linking creativity...",
+    "> Building the future...",
+    "",
+    "✓ BUILD SUCCESSFUL",
+    "",
+    "🚀 HAPPY PROGRAMMER DAY!",
+    "",
+    "> Keep coding."
+];
+
+let messageIndex = 0;
+
+function typeTerminal() {
+
+    if (messageIndex >= terminalMessages.length) {
+        return;
+    }
+
+    const message =
+        terminalMessages[messageIndex];
+
+    const line =
+        document.createElement("div");
+
+    line.textContent = message;
+
+    terminalOutput.appendChild(line);
+
+    messageIndex++;
+
+    setTimeout(
+        typeTerminal,
+        message === "" ? 400 : 650
+    );
+}
+
+setTimeout(typeTerminal, 1800);
+
+
+/* =========================================================
+   CELEBRATION
+========================================================= */
+
+function celebrate() {
+
+    const colors = [
+        "#00f6ff",
+        "#00ff88",
+        "#a855f7",
+        "#ff00c8",
+        "#ffffff"
+    ];
+
+    for (let i = 0; i < 180; i++) {
+
+        const confetti =
+            document.createElement("div");
+
+        confetti.style.position = "fixed";
+        confetti.style.left = "50%";
+        confetti.style.top = "50%";
+
+        confetti.style.width =
+            Math.random() * 8 + 3 + "px";
+
+        confetti.style.height =
+            Math.random() * 8 + 3 + "px";
+
+        confetti.style.background =
+            colors[
+                Math.floor(
+                    Math.random() * colors.length
+                )
+            ];
+
+        confetti.style.boxShadow =
+            "0 0 10px currentColor";
+
+        confetti.style.zIndex = "100";
+
+        confetti.style.pointerEvents = "none";
+
+        document.body.appendChild(confetti);
+
+        const angle =
+            Math.random() * Math.PI * 2;
+
+        const velocity =
+            300 + Math.random() * 800;
+
+        const dx =
+            Math.cos(angle) * velocity;
+
+        const dy =
+            Math.sin(angle) * velocity;
+
+        confetti.animate(
+            [
+                {
+                    transform:
+                        "translate(-50%, -50%) scale(1)",
+                    opacity: 1
+                },
+                {
+                    transform:
+                        `translate(
+                            calc(-50% + ${dx}px),
+                            calc(-50% + ${dy}px)
+                        )
+                        rotate(${Math.random()*720}deg)
+                        scale(0)`,
+                    opacity: 0
+                }
+            ],
+            {
+                duration:
+                    1200 + Math.random() * 1300,
+                easing: "cubic-bezier(.1,.7,.2,1)"
+            }
+        ).onfinish = () => confetti.remove();
+    }
+
+    document.querySelector(".primary").textContent =
+        "> CELEBRATION_SUCCESS ✓";
+}
+
+
+/* =========================================================
+   RANDOM CODE GLITCH
+========================================================= */
+
+const glitchTexts = [
+    "PROGRAMMER",
+    "PROGRAMMER",
+    "PROGRAMM3R",
+    "PROGRAMMER",
+    "PROGRAMMER"
+];
+
+const programmer =
+    document.querySelector(".programmer");
+
+setInterval(() => {
+
+    if (Math.random() > .65) {
+
+        programmer.textContent =
+            glitchTexts[
+                Math.floor(
+                    Math.random() *
+                    glitchTexts.length
+                )
+            ];
+
+        setTimeout(() => {
+            programmer.textContent = "PROGRAMMER";
+        }, 100);
+
+    }
+
+}, 1800);
+
+
+/* =========================================================
+   KONAMI-STYLE SECRET
+========================================================= */
+
+let keys = "";
+
+document.addEventListener("keydown", (e) => {
+
+    keys += e.key.toLowerCase();
+
+    if (keys.length > 20) {
+        keys = keys.slice(-20);
+    }
+
+    if (keys.includes("matrix")) {
+
+        document.body.style.filter =
+            "hue-rotate(90deg)";
+
+        setTimeout(() => {
+            document.body.style.filter = "";
+        }, 3000);
+
+        keys = "";
+    }
+});
+
+</script>
+
+</body>
+</html>
